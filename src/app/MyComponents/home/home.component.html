@@ -1,26 +1,69 @@
-<div class="homeContainer w-full flex justify-center">
-
-    <div class="w-1/2 ">
-        <form action="/action_page.php">
-            <h1 class="text-2xl pb-5">Enter Your Workout Information
-            </h1>
-            <label for="fname" class="text-xl">User Name</label>
-            <input type="text" id="fname" name="firstname" placeholder="Enter Your Name">
-            <label for="country" class="text-xl">Workout Types</label>
-            <select id="country" name="country">
-                <option value="running">Running</option>
-                <option value="cycling">Cycling</option>
-                <option value="swimming">Swimming</option>
-                <option value="yoga">Yoga</option>
-                <option value="strength-training">Strengthing</option>         
-                <option value="walking">Walking</option>
-                <option value="jumping-rope">Jumping Rope</option>
-                <option value="crossfit">CrossFit</option>
-            </select>
-            <label for="lname" class="text-xl">Workout Minuts</label>
-            <input type="text" id="lname" name="lastname" placeholder="Enter the duration of your workout">
-            <input type="submit" value="Add Workout">
-        </form>
+<!-- this is navbar section  -->
+<div class="nav w-full h-16 flex justify-between items-center" id="nav_id">
+    <h1 class="text-white text-2xl pl-10">Fyle</h1>
+    <h1 class="text-white text-2xl pr-10 cursor-pointer" (click)="toggleTable()">
+      {{ getNavbarText() }}
+    </h1>
+  </div>
+  
+  <div class="homeContainer w-full flex flex-col justify-center">
+    <!-- Show form only if showTable is false -->
+    <div *ngIf="!showTable" class="w-full flex justify-center">
+      <form class="w-2/3" (ngSubmit)="onSubmit()" #workoutForm="ngForm">
+        <h1 class="text-2xl pb-5">Enter Your Workout Information</h1>
+  
+        <label for="fname" class="text-xl">User Name</label>
+        <input type="text" id="fname" name="name" [(ngModel)]="formData.name" placeholder="Enter Your Name" required>
+  
+        <label for="country" class="text-xl">Workout Types</label>
+        <select id="country" name="type" [(ngModel)]="formData.type" required>
+          <option value="running">Running</option>
+          <option value="cycling">Cycling</option>
+          <option value="swimming">Swimming</option>
+          <option value="yoga">Yoga</option>
+          <option value="strength-training">Strength Training</option>
+          <option value="walking">Walking</option>
+          <option value="jumping-rope">Jumping Rope</option>
+          <option value="crossfit">CrossFit</option>
+        </select>
+        
+        <div class="flex justify-start gap-6">
+          <label for="lname" class="text-xl">Workout Minutes : </label>
+          <input class="w-1/2 pl-3" type="number" id="lname" name="minutes" [(ngModel)]="formData.minutes" placeholder="Enter the duration of your workout" required>
+        </div>
+        
+        <input type="submit" value="Add Workout">
+      </form>
     </div>
-
-</div>
+  
+    <!-- Show table only if showTable is true -->
+    <div *ngIf="showTable" class="mainContainer">
+      <div class="tableContainer flex justify-center">
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th>Name of Member</th>
+              <th>Workouts</th>
+              <th>Number of Workouts</th>
+              <th>Total Workout Minutes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of userData">
+              <td>{{ user.name }}</td>
+              <td>
+                <ul>
+                  <li *ngFor="let workout of user.workouts">
+                    {{ workout.type }}
+                  </li>
+                </ul>
+              </td>
+              <td>{{ user.workouts.length }}</td>
+              <td>{{ getTotalWorkoutMinutes(user.workouts) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
