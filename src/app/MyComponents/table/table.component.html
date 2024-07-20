@@ -1,0 +1,30 @@
+<div class="mainContainer">
+  <div class="tableContainer flex justify-center">
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Name of Member</th>
+          <th>Workouts</th>
+          <th>Number of Workouts</th>
+          <th>Total Workout Minutes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of userData">
+          <td>{{ user.name }}</td>
+          <td>
+            <ul>
+              <li *ngFor="let workout of user.workouts">
+                {{ workout.type }}
+              </li>
+            </ul>
+          </td>
+          <td>{{ user.workouts.length }}</td>
+          <td>
+            {{ getTotalWorkoutMinutes(user.workouts) }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
